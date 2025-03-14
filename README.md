@@ -1,46 +1,130 @@
-# Getting Started with Create React App
+# ChatApp - Mobile Responsive Chat Application
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A feature-rich chat application with Google authentication, media sharing, voice calls, group chats, and user search functionality.
 
-## Available Scripts
+## Features
 
-In the project directory, you can run:
+- **Google Authentication**: Secure login with Google accounts
+- **Real-time Messaging**: Instant message delivery and updates
+- **Media Sharing**: Share images, videos, audio, and files directly through Firestore
+- **Voice/Video Calls**: Connect with friends through voice and video calls
+- **Group Chats**: Create and manage group conversations
+- **User Search**: Find other users by username
+- **Unique Usernames**: Each user has a unique username for easy discovery
+- **Mobile Responsive**: Works seamlessly on both desktop and mobile devices
 
-### `npm start`
+## Technologies Used
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- React 19
+- TypeScript
+- Firebase (Authentication, Firestore Database)
+- Material UI 6
+- React Router 7
+- Simple-peer (for WebRTC voice/video calls)
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## Setup Instructions
 
-### `npm test`
+### Prerequisites
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- Node.js (v16 or higher)
+- npm or yarn
+- A Firebase project
 
-### `npm run build`
+### Firebase Setup
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+1. Create a new Firebase project at [https://console.firebase.google.com/](https://console.firebase.google.com/)
+2. Enable Google Authentication:
+   - Go to Authentication > Sign-in method
+   - Enable Google provider
+3. Create Firestore Database:
+   - Go to Firestore Database > Create database
+   - Start in production mode
+   - Set up appropriate security rules for your database
+4. Get your Firebase configuration:
+   - Go to Project settings > General
+   - Scroll down to "Your apps" section
+   - Click on the web app (create one if needed)
+   - Copy the firebaseConfig object
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Project Setup
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+1. Clone the repository
+   ```
+   git clone <repository-url>
+   cd chat-app
+   ```
 
-### `npm run eject`
+2. Install dependencies
+   ```
+   npm install
+   ```
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+3. Update Firebase configuration
+   - Open `src/firebase.ts`
+   - Replace the firebaseConfig object with your own Firebase configuration
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+4. Start the development server
+   ```
+   npm start
+   ```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+5. Build for production
+   ```
+   npm run build
+   ```
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## Usage Guide
 
-## Learn More
+### Authentication
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+- When you first open the app, you'll be directed to the login page
+- Click "Sign in with Google" to authenticate
+- On first login, a unique username will be automatically generated for you
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### Messaging
+
+- Select a chat from the sidebar to start messaging
+- Type your message in the input field and press Enter or click the send button
+- Share media by clicking the attachment icon (limited to 5MB per file)
+
+### Media Sharing
+
+- The app uses Firestore to store media files as base64 encoded strings
+- Images, videos, audio files, and documents can be shared
+- File size is limited to 5MB for all media types
+- Group profile images are limited to 2MB
+
+### Finding Users
+
+- Click the "Find Users" button in the sidebar
+- Search for users by username
+- Click "Message" to start a conversation
+
+### Creating Groups
+
+- Click the "Create Group" button in the sidebar
+- Add a group name and optional group image
+- Search and select users to add to the group
+- Click "Create Group" to create the group chat
+
+### Profile Management
+
+- Click on your profile to view and edit your information
+- Update your username (must be unique)
+
+### Voice/Video Calls
+
+- Open a chat with a user
+- Click the video call icon in the chat header
+- Accept the call on the other end to start the conversation
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Acknowledgements
+
+- [Firebase](https://firebase.google.com/) for backend services
+- [Material UI](https://mui.com/) for UI components
+- [Simple-peer](https://github.com/feross/simple-peer) for WebRTC implementation
+"# web-chat-app" 
