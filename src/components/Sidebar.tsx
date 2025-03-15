@@ -16,13 +16,19 @@ import {
   Badge,
   Tabs,
   Tab,
-  Tooltip
+  Tooltip,
+  Menu,
+  MenuItem,
+  ListItemIcon
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import LogoutIcon from '@mui/icons-material/Logout';
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import CallIcon from '@mui/icons-material/Call';
+import ChatIcon from '@mui/icons-material/Chat';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { useAuth } from '../contexts/AuthContext';
 import { collection, query, where, onSnapshot, orderBy } from 'firebase/firestore';
 import { db } from '../firebase';
@@ -47,6 +53,11 @@ const Sidebar: React.FC<SidebarProps> = ({ onClose }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [chats, setChats] = useState<ChatItem[]>([]);
   const [tabValue, setTabValue] = useState(0);
+  const [contextMenu, setContextMenu] = useState<{
+    mouseX: number;
+    mouseY: number;
+    chatId: string;
+  } | null>(null);
 
   useEffect(() => {
     if (!currentUser) return;
@@ -91,6 +102,13 @@ const Sidebar: React.FC<SidebarProps> = ({ onClose }) => {
     }
   };
 
+  const handleChatWithVoiceClick = (chatId: string) => {
+    navigate(`/chat-with-voice/${chatId}`);
+    if (window.innerWidth < 960) {
+      onClose();
+    }
+  };
+
   const handleCreateGroup = () => {
     navigate('/create-group');
     if (window.innerWidth < 960) {
@@ -114,6 +132,23 @@ const Sidebar: React.FC<SidebarProps> = ({ onClose }) => {
 
   const handleTabChange = (_event: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue);
+  };
+
+  const handleContextMenu = (event: React.MouseEvent, chatId: string) => {
+    event.preventDefault();
+    setContextMenu(
+      contextMenu === null
+        ? {
+            mouseX: event.clientX + 2,
+            mouseY: event.clientY - 6,
+            chatId,
+          }
+        : null,
+    );
+  };
+
+  const handleContextMenuClose = () => {
+    setContextMenu(null);
   };
 
   const filteredChats = chats.filter(chat => {
@@ -208,7 +243,22 @@ const Sidebar: React.FC<SidebarProps> = ({ onClose }) => {
       <List sx={{ flexGrow: 1, overflow: 'auto', pt: 0 }}>
         {filteredChats.length > 0 ? (
           filteredChats.map((chat) => (
-            <ListItem key={chat.id} disablePadding>
+            <ListItem 
+              key={chat.id} 
+              disablePadding
+              onContextMenu={(event) => handleContextMenu(event, chat.id)}
+              secondaryAction={
+                <IconButton 
+                  edge="end" 
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    handleContextMenu(event, chat.id);
+                  }}
+                >
+                  <MoreVertIcon fontSize="small" />
+                </IconButton>
+              }
+            >
               <ListItemButton onClick={() => handleChatClick(chat.id)}>
                 <ListItemAvatar>
                   <Badge
@@ -250,6 +300,41 @@ const Sidebar: React.FC<SidebarProps> = ({ onClose }) => {
           </Box>
         )}
       </List>
+
+      {/* Context Menu */}
+      <Menu
+        open={contextMenu !== null}
+        onClose={handleContextMenuClose}
+        anchorReference="anchorPosition"
+        anchorPosition={
+          contextMenu !== null
+            ? { top: contextMenu.mouseY, left: contextMenu.mouseX }
+            : undefined
+        }
+      >
+        <MenuItem onClick={() => {
+          if (contextMenu) {
+            handleChatClick(contextMenu.chatId);
+            handleContextMenuClose();
+          }
+        }}>
+          <ListItemIcon>
+            <ChatIcon fontSize="small" />
+          </ListItemIcon>
+          <ListItemText>Open Chat</ListItemText>
+        </MenuItem>
+        <MenuItem onClick={() => {
+          if (contextMenu) {
+            handleChatWithVoiceClick(contextMenu.chatId);
+            handleContextMenuClose();
+          }
+        }}>
+          <ListItemIcon>
+            <CallIcon fontSize="small" />
+          </ListItemIcon>
+          <ListItemText>Open with Voice Call</ListItemText>
+        </MenuItem>
+      </Menu>
     </Box>
   );
 };

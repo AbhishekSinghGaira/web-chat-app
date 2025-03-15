@@ -13,6 +13,43 @@ A feature-rich chat application with Google authentication, media sharing, voice
 - **Unique Usernames**: Each user has a unique username for easy discovery
 - **Mobile Responsive**: Works seamlessly on both desktop and mobile devices
 
+## Voice Call Feature
+
+The voice call feature allows users to make audio calls within the chat interface. To use this feature:
+
+1. **Start a Voice Call**: 
+   - Click on the call icon in the chat header
+   - Or right-click on a chat in the sidebar and select "Open with Voice Call"
+
+2. **During a Call**:
+   - Mute/unmute your microphone
+   - Toggle speaker mode
+   - End the call
+
+3. **Call Status**:
+   - See connection status
+   - View call duration
+   - Receive notifications for incoming calls
+
+Note: The current implementation simulates voice calls for demonstration purposes. In a production environment, this would be integrated with WebRTC or a service like Twilio for actual voice communication.
+
+## Technical Implementation
+
+The voice call feature is implemented using:
+
+- React state management for call status
+- Material-UI Dialog component for the call interface
+- Simulated connection with timers
+- Integration with the existing chat infrastructure
+
+## Future Enhancements
+
+- Video call support
+- Screen sharing
+- Call recording
+- Multiple participant calls
+- Call quality settings
+
 ## Technologies Used
 
 - React 19

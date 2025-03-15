@@ -24,11 +24,11 @@ import AttachFileIcon from '@mui/icons-material/AttachFile';
 import ImageIcon from '@mui/icons-material/Image';
 import MicIcon from '@mui/icons-material/Mic';
 import VideocamIcon from '@mui/icons-material/Videocam';
+import CallIcon from '@mui/icons-material/Call';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import DoneAllIcon from '@mui/icons-material/DoneAll';
 import EmojiEmotionsIcon from '@mui/icons-material/EmojiEmotions';
 import GifIcon from '@mui/icons-material/Gif';
-import CallIcon from '@mui/icons-material/Call';
 import EmojiPicker from '../components/EmojiPicker';
 import GifPicker from '../components/GifPicker';
 import VoiceCall from '../components/VoiceCall';
@@ -172,7 +172,7 @@ const InputContainer = styled(Box)(({ theme }) => ({
   },
 }));
 
-const ChatRoom: React.FC = () => {
+const ChatRoomWithVoice: React.FC = () => {
   const { chatId } = useParams<{ chatId: string }>();
   const { currentUser } = useAuth();
   const [message, setMessage] = useState('');
@@ -182,6 +182,7 @@ const ChatRoom: React.FC = () => {
   const [uploading, setUploading] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [inCall, setInCall] = useState(false);
+  const [inVoiceCall, setInVoiceCall] = useState(false);
   const [fileError, setFileError] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -189,7 +190,6 @@ const ChatRoom: React.FC = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [emojiAnchorEl, setEmojiAnchorEl] = useState<HTMLElement | null>(null);
   const [gifAnchorEl, setGifAnchorEl] = useState<HTMLElement | null>(null);
-  const [inVoiceCall, setInVoiceCall] = useState(false);
 
   // Fetch chat info
   useEffect(() => {
@@ -445,6 +445,15 @@ const ChatRoom: React.FC = () => {
     setInCall(false);
   };
 
+  const handleStartVoiceCall = () => {
+    setAnchorEl(null);
+    setInVoiceCall(true);
+  };
+
+  const handleEndVoiceCall = () => {
+    setInVoiceCall(false);
+  };
+
   const handleEmojiClick = (event: React.MouseEvent<HTMLElement>) => {
     setEmojiAnchorEl(event.currentTarget);
   };
@@ -525,15 +534,6 @@ const ChatRoom: React.FC = () => {
       setUploading(false);
       handleGifClose();
     }
-  };
-
-  const handleStartVoiceCall = () => {
-    setAnchorEl(null);
-    setInVoiceCall(true);
-  };
-
-  const handleEndVoiceCall = () => {
-    setInVoiceCall(false);
   };
 
   const renderMessage = (msg: Message, index: number) => {
@@ -823,4 +823,4 @@ const ChatRoom: React.FC = () => {
   );
 };
 
-export default ChatRoom; 
+export default ChatRoomWithVoice; 
